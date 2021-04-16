@@ -36,7 +36,6 @@ String dataLabel5 = "Film Piezo";
 String dataLabel6 = "Weighted Film Piezo"; 
 String dataLabel7 = "Vibration Sensor"; 
 
-
 bool label = true; 
 
 // constants won't change. They're used here to set pin numbers:
