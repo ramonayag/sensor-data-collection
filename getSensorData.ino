@@ -16,10 +16,6 @@
   - 10K resistor attached to pin 3 from ground
   - Piezos connected via 1 MegaOhm resistor 
 ...
-<<<<<<< HEAD
-=======
-
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
 */
 
 //use milis for 2+ timed concurrent events 
@@ -29,19 +25,24 @@
 
 MPU6050 mpu;
 
-String dataLabel1 = "ACC X-raw"; 
-String dataLabel2 = "ACC Y-raw"; 
-String dataLabel3 = "ACC Z-raw"; 
-String dataLabel1B = "ACC X-norm"; 
+String dataLabel1A = "ACC X-raw"; 
+String dataLabel1B = "ACC Y-raw"; 
+String dataLabel1C = "ACC Z-raw"; 
+String dataLabel2A = "ACC X-norm"; 
 String dataLabel2B = "ACC Y-norm"; 
-String dataLabel3B = "ACC Z-norm"; 
-<<<<<<< HEAD
-String dataLabel4 = "Ceramic Piezo:"; 
-String dataLabel5 = "Film Piezo"; 
-String dataLabel6 = "Weighted Film Piezo"; 
-String dataLabel7 = "Vibration Sensor"; 
-=======
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
+String dataLabel2C = "ACC Z-norm"; 
+
+String dataLabel3A = "GYRO X-raw"; 
+String dataLabel3B = "GYRO Y-raw"; 
+String dataLabel3C = "GYRO Z-raw"; 
+String dataLabel4A = "GYRO X-norm"; 
+String dataLabel4B = "GYRO Y-norm"; 
+String dataLabel4C = "GYRO Z-norm"; 
+
+String dataLabel5 = "Ceramic Piezo:"; 
+String dataLabel6 = "Film Piezo"; 
+String dataLabel7 = "Weighted Film Piezo"; 
+String dataLabel8 = "Vibration Sensor"; 
 
 bool label = true; 
 
@@ -49,21 +50,14 @@ bool label = true;
 const int buttonPin = 3;     // pushbutton pin
 const int ledGreen = 12;  // LED START pin
 const int ledRed = 11;  // LED STOP pin
-<<<<<<< HEAD
 const unsigned long eventInterval = 10000; //create a 10 second time interval   
-=======
-const unsigned long eventInterval = 5000; //create a 5 second time interval   
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
 unsigned long startTime = 0;
 
 const int ceramicPizeoSensor = A0; //  ceramic piezo is connected to analog pin 0
 const int pizeoVibrationSensor = A1; // piezo vibration is connected to analog pin 1
 const int weightedPizeoSensor = A2; // weighted piezo vibration is connected to analog pin 2
-<<<<<<< HEAD
 const int vibrationSensor = 6; // vibration sensor is connected to digital pin 6 
 
-=======
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
 
 // variables will change:
 int buttonState = 0;         // variable for reading the pushbutton status
@@ -76,16 +70,24 @@ void setup() {
   Serial.println("Program started");
   Serial.println("Initialize MPU6050");
 
-<<<<<<< HEAD
   while(!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G)){
-=======
-
-  while(!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
-  {
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
     Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
     delay(500);
   }
+
+  //Set accelerometer and gyroscope offsets
+  //mpu.setAccelOffsetX();
+  //mpu.setAccelOffsetY();
+  //mpu.setAccelOffsetZ();
+  mpu.setGyroOffsetX(155);
+  mpu.setGyroOffsetY(15);
+  mpu.setGyroOffsetZ(15);
+
+  // Calibrate gyroscope. The calibration must be at rest.
+  mpu.calibrateGyro();
+
+  // Set threshold sensivty. Default 3.
+  // mpu.setThreshold(3);
 
   // initialize the LED pin as an output:
   pinMode(ledGreen, OUTPUT);
@@ -93,7 +95,6 @@ void setup() {
 
   // initialize the pushbutton pin as an input:
   pinMode(buttonPin, INPUT);
-<<<<<<< HEAD
   pinMode(vibrationSensor, INPUT); 
 
   checkSettings();
@@ -101,17 +102,6 @@ void setup() {
 
 
 void checkSettings(){  
-=======
-
-  checkSettings();
-
-}
-
-void checkSettings()
-{
-  Serial.println();
-  
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
   Serial.print(" * Sleep Mode:            ");
   Serial.println(mpu.getSleepEnabled() ? "Enabled" : "Disabled");
   
@@ -140,15 +130,25 @@ void checkSettings()
   Serial.print(" / ");
   Serial.print(mpu.getAccelOffsetY());
   Serial.print(" / ");
-<<<<<<< HEAD
   Serial.println(mpu.getAccelOffsetZ());  
-}// END of checkSettings function
-=======
-  Serial.println(mpu.getAccelOffsetZ());
+
+  Serial.print(" * Gyroscope:         ");
+  switch(mpu.getScale())
+  {
+    case MPU6050_SCALE_2000DPS:        Serial.println("2000 dps"); break;
+    case MPU6050_SCALE_1000DPS:        Serial.println("1000 dps"); break;
+    case MPU6050_SCALE_500DPS:         Serial.println("500 dps"); break;
+    case MPU6050_SCALE_250DPS:         Serial.println("250 dps"); break;
+  } 
   
-  Serial.println();
-}
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
+  Serial.print(" * Gyroscope offsets: ");
+  Serial.print(mpu.getGyroOffsetX());
+  Serial.print(" / ");
+  Serial.print(mpu.getGyroOffsetY());
+  Serial.print(" / ");
+  Serial.println(mpu.getGyroOffsetZ());
+  
+}// END of checkSettings function
 
 
 
@@ -160,49 +160,42 @@ void loop() {
   int ceramicPiezoSensorValue = analogRead(ceramicPizeoSensor);   // read the sensor and store it in the variable sensorReading:
   int piezoVibrationSensorValue = analogRead(pizeoVibrationSensor);   // read the sensor and store it in the variable sensorReading:
   int weightedPiezoSensorValue = analogRead(weightedPizeoSensor);   // read the sensor and store it in the variable sensorReading:
-<<<<<<< HEAD
   long vibrationSensorValue  = pulseIn(vibrationSensor, HIGH); 
-=======
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
+  Vector rawAccel = mpu.readRawAccel();
+  Vector normAccel = mpu.readNormalizeAccel();
+  Vector rawGyro = mpu.readRawGyro();
+  Vector normGyro = mpu.readNormalizeGyro();
+  
 
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
 
     Serial.println("button pressed");
-<<<<<<< HEAD
     
     // turn LED on:
     delay(5000); //wait 5 seconds before you start collecting data 
     digitalWrite(ledRed, LOW);
-=======
-    digitalWrite(ledRed, LOW);
-    // turn LED on:
-    delay(5000); //wait 5 seconds before you start collecting data 
-
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
     digitalWrite(ledGreen, HIGH);
     //collect sensor data here for 5 seconds
 
     //enable headers 
     while(label){
-<<<<<<< HEAD
-      Serial.println(dataLabel1 + ", ");
-=======
-      Serial.print(dataLabel1 + ", ");
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
-      Serial.print(dataLabel2 + ",");
-      Serial.print(dataLabel1 + ", ");
-      Serial.print(dataLabel1B + ", ");
+      Serial.println(dataLabel1A + ", ");
+      Serial.print(dataLabel1B + ",");
+      Serial.print(dataLabel1C + ", ");
+      Serial.print(dataLabel2A + ", ");
       Serial.print(dataLabel2B + ", ");
-<<<<<<< HEAD
-      Serial.print(dataLabel3B +", ");
-      Serial.print(dataLabel4 +", ");
+      Serial.print(dataLabel2C +", ");
+      Serial.println(dataLabel3A + ", ");
+      Serial.print(dataLabel3B + ",");
+      Serial.print(dataLabel3C + ", ");
+      Serial.print(dataLabel4A + ", ");
+      Serial.print(dataLabel4B + ", ");
+      Serial.print(dataLabel4C +", ");
       Serial.print(dataLabel5 +", ");
       Serial.print(dataLabel6 +", ");
-      Serial.print(dataLabel7 +"\n");
-=======
-      Serial.print(dataLabel3B +"\n");
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
+      Serial.print(dataLabel7 +", ");
+      Serial.print(dataLabel8 +"\n");
       label = false; 
     }
     
@@ -210,10 +203,6 @@ void loop() {
     startTime = millis();
     //get data from sensors for 5 seconds 
     while(millis() - startTime <= eventInterval){
-<<<<<<< HEAD
-      
-      Vector rawAccel = mpu.readRawAccel();
-      Vector normAccel = mpu.readNormalizeAccel();
         
       Serial.print(String(rawAccel.XAxis) +",");
       Serial.print(String(rawAccel.YAxis) +",");
@@ -221,34 +210,20 @@ void loop() {
       Serial.print(String(normAccel.XAxis) +",");
       Serial.print(String(normAccel.YAxis) +",");
       Serial.print(String(normAccel.ZAxis) +",");
+
+      Serial.print(String(rawGyro.XAxis) +",");
+      Serial.print(String(rawGyro.YAxis) +",");
+      Serial.print(String(rawGyro.ZAxis) +",");
+      Serial.print(String(normGyro.XAxis) +",");
+      Serial.print(String(normGyro.YAxis) +",");
+      Serial.print(String(normGyro.ZAxis) +",");
+      
       Serial.print(String(ceramicPiezoSensorValue) +",");
       Serial.print(String(piezoVibrationSensorValue) +",");
       Serial.print(String(weightedPiezoSensorValue) +",");
       Serial.print(String(vibrationSensorValue) +"\n");
-=======
-       Vector rawAccel = mpu.readRawAccel();
-        Vector normAccel = mpu.readNormalizeAccel();
-        
-        Serial.print(rawAccel.XAxis);
-        Serial.print(",");
-        Serial.print(rawAccel.YAxis);
-        Serial.print(",");
-        Serial.print(rawAccel.ZAxis);
-        Serial.print(",");
-        Serial.print(normAccel.XAxis);
-        Serial.print(",");
-        Serial.print(normAccel.YAxis);
-        Serial.print(",");
-        Serial.println(normAccel.ZAxis);
-          
-        
-        Serial.print("The value of the ceramic piezo sensor is: ");
-        Serial.println(ceramicPiezoSensorValue);
-        Serial.print("The value of the vibration piezo sensor is: ");
-        Serial.println(piezoVibrationSensorValue);
-        Serial.print("The value of the weighted piezo sensor is: ");
-        Serial.println(weightedPiezoSensorValue);
->>>>>>> c2cbd5db70c49089a682a2b94d082c9c57c25a7b
+
+      delay(50);
     
     }//close while loop
   }//close if startment 
