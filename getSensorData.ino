@@ -157,15 +157,7 @@ void loop() {
   
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
-  int ceramicPiezoSensorValue = analogRead(ceramicPizeoSensor);   // read the sensor and store it in the variable sensorReading:
-  int piezoVibrationSensorValue = analogRead(pizeoVibrationSensor);   // read the sensor and store it in the variable sensorReading:
-  int weightedPiezoSensorValue = analogRead(weightedPizeoSensor);   // read the sensor and store it in the variable sensorReading:
-  long vibrationSensorValue  = pulseIn(vibrationSensor, HIGH); 
-  Vector rawAccel = mpu.readRawAccel();
-  Vector normAccel = mpu.readNormalizeAccel();
-  Vector rawGyro = mpu.readRawGyro();
-  Vector normGyro = mpu.readNormalizeGyro();
-  
+  digitalWrite(ledRed, HIGH);
 
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
@@ -179,7 +171,7 @@ void loop() {
     //collect sensor data here for 5 seconds
 
     //enable headers 
-    while(label){
+    while(label){  
       Serial.println(dataLabel1A + ", ");
       Serial.print(dataLabel1B + ",");
       Serial.print(dataLabel1C + ", ");
@@ -203,6 +195,14 @@ void loop() {
     startTime = millis();
     //get data from sensors for 5 seconds 
     while(millis() - startTime <= eventInterval){
+      int ceramicPiezoSensorValue = analogRead(ceramicPizeoSensor);   // read the sensor and store it in the variable sensorReading:
+      int piezoVibrationSensorValue = analogRead(pizeoVibrationSensor);   // read the sensor and store it in the variable sensorReading:
+      int weightedPiezoSensorValue = analogRead(weightedPizeoSensor);   // read the sensor and store it in the variable sensorReading:
+      long vibrationSensorValue  = pulseIn(vibrationSensor, HIGH); 
+      Vector rawAccel = mpu.readRawAccel();
+      Vector normAccel = mpu.readNormalizeAccel();
+      Vector rawGyro = mpu.readRawGyro();
+      Vector normGyro = mpu.readNormalizeGyro();
         
       Serial.print(String(rawAccel.XAxis) +",");
       Serial.print(String(rawAccel.YAxis) +",");
@@ -223,7 +223,6 @@ void loop() {
       Serial.print(String(weightedPiezoSensorValue) +",");
       Serial.print(String(vibrationSensorValue) +"\n");
 
-      delay(50);
     
     }//close while loop
   }//close if startment 
