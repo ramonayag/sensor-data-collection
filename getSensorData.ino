@@ -172,13 +172,13 @@ void loop() {
 
     //enable headers 
     while(label){  
-      Serial.println(dataLabel1A + ", ");
+      Serial.print(dataLabel1A + ", ");
       Serial.print(dataLabel1B + ",");
       Serial.print(dataLabel1C + ", ");
       Serial.print(dataLabel2A + ", ");
       Serial.print(dataLabel2B + ", ");
       Serial.print(dataLabel2C +", ");
-      Serial.println(dataLabel3A + ", ");
+      Serial.print(dataLabel3A + ", ");
       Serial.print(dataLabel3B + ",");
       Serial.print(dataLabel3C + ", ");
       Serial.print(dataLabel4A + ", ");
