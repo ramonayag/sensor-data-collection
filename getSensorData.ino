@@ -27,24 +27,24 @@ MPU6050 mpu;
 
 String dataLabel0 = "Time"; 
 
-String dataLabel1A = "ACC X-raw"; 
-String dataLabel1B = "ACC Y-raw"; 
-String dataLabel1C = "ACC Z-raw"; 
-String dataLabel2A = "ACC X-norm"; 
-String dataLabel2B = "ACC Y-norm"; 
-String dataLabel2C = "ACC Z-norm"; 
+String dataLabel1A = "ACC_X-raw"; 
+String dataLabel1B = "ACC_Y-raw"; 
+String dataLabel1C = "ACC_Z-raw"; 
+String dataLabel2A = "ACC_X-norm"; 
+String dataLabel2B = "ACC_Y-norm"; 
+String dataLabel2C = "ACC_Z-norm"; 
 
-String dataLabel3A = "GYRO X-raw"; 
-String dataLabel3B = "GYRO Y-raw"; 
-String dataLabel3C = "GYRO Z-raw"; 
-String dataLabel4A = "GYRO X-norm"; 
-String dataLabel4B = "GYRO Y-norm"; 
-String dataLabel4C = "GYRO Z-norm"; 
+String dataLabel3A = "GYRO_X-raw"; 
+String dataLabel3B = "GYRO_Y-raw"; 
+String dataLabel3C = "GYRO_Z-raw"; 
+String dataLabel4A = "GYRO_X-norm"; 
+String dataLabel4B = "GYRO_Y-norm"; 
+String dataLabel4C = "GYRO_Z-norm"; 
 
-String dataLabel5 = "Ceramic Piezo:"; 
-String dataLabel6 = "Film Piezo"; 
-String dataLabel7 = "Weighted Film Piezo"; 
-String dataLabel8 = "Vibration Sensor"; 
+String dataLabel5 = "Ceramic_Piezo:"; 
+String dataLabel6 = "Film_Piezo"; 
+String dataLabel7 = "Weighted_Film_Piezo"; 
+String dataLabel8 = "Vibration_Sensor"; 
 
 bool label = true; 
 
