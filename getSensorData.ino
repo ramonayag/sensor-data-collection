@@ -25,6 +25,8 @@
 
 MPU6050 mpu;
 
+String dataLabel0 = "Time"; 
+
 String dataLabel1A = "ACC X-raw"; 
 String dataLabel1B = "ACC Y-raw"; 
 String dataLabel1C = "ACC Z-raw"; 
@@ -152,16 +154,13 @@ void checkSettings(){
 
 
 
-void loop() {
-  unsigned long currentTime = millis();
-  
+void loop() {  
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
   digitalWrite(ledRed, HIGH);
 
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == HIGH) {
-
     Serial.println("button pressed");
     
     // turn LED on:
@@ -172,8 +171,9 @@ void loop() {
 
     //enable headers 
     while(label){  
+      Serial.print(dataLabel0 + ", ");
       Serial.print(dataLabel1A + ", ");
-      Serial.print(dataLabel1B + ",");
+      Serial.print(dataLabel1B + ", ");
       Serial.print(dataLabel1C + ", ");
       Serial.print(dataLabel2A + ", ");
       Serial.print(dataLabel2B + ", ");
@@ -193,7 +193,7 @@ void loop() {
     
 
     startTime = millis();
-    //get data from sensors for 5 seconds 
+    //get data from sensors for eventInterval (10) seconds 
     while(millis() - startTime <= eventInterval){
       int ceramicPiezoSensorValue = analogRead(ceramicPizeoSensor);   // read the sensor and store it in the variable sensorReading:
       int piezoVibrationSensorValue = analogRead(pizeoVibrationSensor);   // read the sensor and store it in the variable sensorReading:
@@ -203,6 +203,9 @@ void loop() {
       Vector normAccel = mpu.readNormalizeAccel();
       Vector rawGyro = mpu.readRawGyro();
       Vector normGyro = mpu.readNormalizeGyro();
+
+      //Add time to document 
+      Serial.print(String(millis() - startTime) +",");
         
       Serial.print(String(rawAccel.XAxis) +",");
       Serial.print(String(rawAccel.YAxis) +",");
@@ -220,7 +223,7 @@ void loop() {
       
       Serial.print(String(ceramicPiezoSensorValue) +",");
       Serial.print(String(piezoVibrationSensorValue) +",");
-      Serial.print(String(weightedPiezoSensorValue) +",");
+      Serial.print(String(weightedPiezoSensorValue) +" ,");
       Serial.print(String(vibrationSensorValue) +"\n");
 
     
