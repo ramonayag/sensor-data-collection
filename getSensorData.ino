@@ -1,11 +1,11 @@
 /*
  * 
-  FLOW:  Getting data from 4 sensors. 
+  FLOW:  Getting data from 5 sensors. 
 
   --> Press button 
   --> Delay of 5 seconds 
   --> Green LED turns on 
-  --> Data collected from all 4 sensors for 5 seconds 
+  --> Data collected from all 5 sensors for 10 seconds 
   --> Green LED turns off
   --> Red LED turns on 
 
@@ -41,7 +41,7 @@ String dataLabel4A = "GYRO_X-norm";
 String dataLabel4B = "GYRO_Y-norm"; 
 String dataLabel4C = "GYRO_Z-norm"; 
 
-String dataLabel5 = "Ceramic_Piezo:"; 
+String dataLabel5 = "Ceramic_Piezo"; 
 String dataLabel6 = "Film_Piezo"; 
 String dataLabel7 = "Weighted_Film_Piezo"; 
 String dataLabel8 = "Vibration_Sensor"; 
@@ -81,9 +81,9 @@ void setup() {
   //mpu.setAccelOffsetX();
   //mpu.setAccelOffsetY();
   //mpu.setAccelOffsetZ();
-  mpu.setGyroOffsetX(155);
-  mpu.setGyroOffsetY(15);
-  mpu.setGyroOffsetZ(15);
+  // mpu.setGyroOffsetX(155);
+  // mpu.setGyroOffsetY(15);
+  // mpu.setGyroOffsetZ(15);
 
   // Calibrate gyroscope. The calibration must be at rest.
   mpu.calibrateGyro();
@@ -100,6 +100,13 @@ void setup() {
   pinMode(vibrationSensor, INPUT); 
 
   checkSettings();
+
+  mpu.setAccelOffsetX(mpu.getAccelOffsetX());
+  mpu.setAccelOffsetY(mpu.getAccelOffsetY());
+  mpu.setAccelOffsetZ((mpu.getAccelOffsetZ());
+  mpu.setGyroOffsetX(mpu.getGyroOffsetX());
+  mpu.setGyroOffsetY(mpu.getGyroOffsetY());
+  mpu.setGyroOffsetZ(mpu.getGyroOffsetZ());
 }
 
 
