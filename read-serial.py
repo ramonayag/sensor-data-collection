@@ -8,12 +8,12 @@ import serial
 # import time
 
 
-activityName = input()
+activityName = input("What activity are you getting data for?: ").lower()
 
 # port Arduino is plugged in 
 arduino_port = "/dev/cu.usbserial-1410"
 baud = 115200;
-fileName = "{}Data.csv".format(activityName)
+fileName = "{}DataOG.csv".format(activityName)
 print_labels = True
 line = 0 
 
